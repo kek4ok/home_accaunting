@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Home accaunting</string>
+    <string name="category_prompt">Выберите категорию</string>
+    <string name="amount_hint">Введите сумму</string>
+    <string name="description_hint">Введите описание</string>
+    <string name="select_date">Выберите дату</string>
+    <string name="submit">Подтвердить</string>
+</resources>

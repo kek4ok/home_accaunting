@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/settings"
+            android:title="Настройки" />
+        <item
+            android:id="@+id/accounts"
+            android:title="Счета" />
+        <item
+            android:id="@+id/currencies"
+            android:title="Валюты" />
+        <item
+            android:id="@+id/reports"
+            android:title="Отчеты" />
+    </group>
+</menu>
