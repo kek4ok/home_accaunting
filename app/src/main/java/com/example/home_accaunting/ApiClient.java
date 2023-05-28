@@ -29,7 +29,7 @@ public class ApiClient {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private Context context;
     private SharedPrefManager prefManager;
-    private String HOST = "http://192.168.31.71:5000";
+    private String HOST = "http://192.168.56.1:5000";
 
     public ApiClient(Context context) {
         if (this.client == null) {
@@ -150,7 +150,7 @@ public class ApiClient {
         });
     }
 
-    public void getCategories(Callback callback, int position ) {
+    public void getCategories(Callback callback, int position) {
         String type;
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -165,7 +165,7 @@ public class ApiClient {
             try {
 
                 Request request = new Request.Builder()
-                        .url(HOST + "/get_categories/"+type)
+                        .url(HOST + "/get_categories/" + type)
                         .build();
 
                 Response response = client.newCall(request).execute();
@@ -191,7 +191,13 @@ public class ApiClient {
                 // Сохранить категории с помощью SharedPrefManager
                 sharedPrefManager.saveCategories(categoriesMap);
 
-                handler.post(() -> callback.onResult(categories));
+                handler.post(() -> {
+                    try {
+                        callback.onResult(categories);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -264,7 +270,7 @@ public class ApiClient {
         }
 
         int userId = prefManager.getUserId();
-        String url = "http://192.168.31.71:5000/transactions/" + type + "/" + userId;
+        String url = HOST + "/transactions/" + type + "/" + userId;
 
         Request request = new Request.Builder()
                 .url(url)

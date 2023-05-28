@@ -1,5 +1,7 @@
 package com.example.home_accaunting;
 
+import android.content.Intent;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -23,6 +25,12 @@ public class MenuHandler {
                 case R.id.settings:
                     // ваш код
                     break;
+                case R.id.categories:
+                    openCategoriesActivity();
+                    break;
+                case R.id.transactions:
+                    openTransactionsActivity();
+                    break;
                 case R.id.accounts:
                     // ваш код
                     break;
@@ -36,5 +44,17 @@ public class MenuHandler {
 
             return true;
         });
+    }
+
+    private void openCategoriesActivity() {
+        Intent intent = new Intent(navigationView.getContext(), CategoriesActivity.class);
+
+        navigationView.getContext().startActivity(intent);
+    }
+
+    private void openTransactionsActivity() {
+        Intent intent = new Intent(navigationView.getContext(), SecondActivity.class);
+
+        navigationView.getContext().startActivity(intent);
     }
 }
