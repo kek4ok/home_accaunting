@@ -5,4 +5,5 @@
     <string name="description_hint">Введите описание</string>
     <string name="select_date">Выберите дату</string>
     <string name="submit">Подтвердить</string>
+    <string name="category_name_hint">Название категории</string>
 </resources>

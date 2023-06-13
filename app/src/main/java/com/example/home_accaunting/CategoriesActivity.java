@@ -1,9 +1,20 @@
 package com.example.home_accaunting;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +30,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class CategoriesActivity extends AppCompatActivity {
 
@@ -74,6 +89,14 @@ public class CategoriesActivity extends AppCompatActivity {
                 tab.setText("Расходы");
             }
         }).attach();
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // отображает новую карточку с полями ввода и выбора
+                displayInputCard();
+            }
+        });
     }
 
     private void setupViewPager() {
@@ -106,5 +129,42 @@ public class CategoriesActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void displayInputCard() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.add_category, null);
+
+        EditText editTextName = view.findViewById(R.id.edittext_name);
+        Button buttonSubmit = view.findViewById(R.id.button_submit);
+        int position = viewPager.getCurrentItem();
+
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editTextName.getText().toString();
+
+                apiClient.addCategory(position, name, dialog, response -> {
+                    // Обработка ответа
+                    runOnUiThread(() -> {
+                        Toast.makeText(CategoriesActivity.this, "Категория добавлена", Toast.LENGTH_SHORT).show();
+                    });
+                }, error -> {
+                    // Обработка ошибки
+                    runOnUiThread(() -> {
+                        Toast.makeText(CategoriesActivity.this, "Ошибка добавления", Toast.LENGTH_SHORT).show();
+                    });
+                });
+
+
+            }
+
+        });
+
     }
 }

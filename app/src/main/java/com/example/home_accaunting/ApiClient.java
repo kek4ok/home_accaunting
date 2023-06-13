@@ -260,6 +260,54 @@ public class ApiClient {
         });
     }
 
+    public void addCategory(int position, String name, AlertDialog dialog,
+                            ResponseCallback responseCallback, ErrorCallback errorCallback) {
+
+        String type;
+        if (position == 0) {
+            type = "Income";
+        } else {
+            type = "Expense";
+        }
+        // Создание JSON-объекта и добавление данных
+        JSONObject json = new JSONObject();
+        try {
+            json.put("name", name);
+            json.put("type", type);
+        } catch (JSONException e) {
+            errorCallback.onError(e);
+            return;
+        }
+
+
+        // Создание RequestBody с JSON-строкой и MediaType
+        RequestBody requestBody = RequestBody.create(JSON, json.toString());
+
+        Request request = new Request.Builder()
+                .url(HOST + "/categories")
+                .post(requestBody)
+                .addHeader("Content-Type", "application/json") // Установка заголовка Content-Type на application/json
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                errorCallback.onError(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    responseCallback.onResponse(response);
+                    dialog.dismiss();
+                } else {
+                    errorCallback.onError(new IOException("Unexpected code " + response));
+                }
+            }
+        });
+    }
+
+
     public void getUserTransactions(int position, ResponseCallback responseCallback, ErrorCallback errorCallback) {
 
         String type;
